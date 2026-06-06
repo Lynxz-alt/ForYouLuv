@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday, Luvi Hana Margareta 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #c9a06b;
+  --gold-light: #ecdbb8;
+  --gold-dim: rgba(201,160,107,0.35);
+  --rose: #c86b85;
+  --rose-light: #f0c4cf;
+  --cream: #fdf8f2;
+  --dark: #080610;
+  --dark2: #0f0a1a;
+  --dark3: #150f22;
+  --text-bright: rgba(255,255,255,0.95);
+  --text-mid: rgba(255,255,255,0.72);
+  --text-dim: rgba(255,255,255,0.42);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--dark);
+  color: #fff;
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  overflow: hidden;
+  height: 100vh; width: 100vw;
+}
+
+/* ── CANVAS LAYERS ── */
+#starCanvas {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+}
+#fwCanvas {
+  position: fixed; inset: 0; z-index: 6; pointer-events: none;
+}
+
+/* ── SCREENS ── */
+.screen {
+  position: fixed; inset: 0; z-index: 10;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 2rem;
+  opacity: 0; pointer-events: none;
+  transition: opacity 1s cubic-bezier(0.4,0,0.2,1);
+  overflow-y: auto;
+}
+.screen.active { opacity: 1; pointer-events: all; }
+.screen.exit { opacity: 0; pointer-events: none; }
+
+/* ────────────────────────────────────────────
+   SCREEN 1 — COVER
+──────────────────────────────────────────── */
+#s1 {
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 30%, rgba(200,107,133,0.16) 0%, transparent 65%),
+    radial-gradient(ellipse 70% 60% at 80% 80%, rgba(201,160,107,0.12) 0%, transparent 55%),
+    var(--dark);
+  text-align: center; gap: 0;
+}
+
+.s1-late {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid rgba(201,160,107,0.28);
+  background: rgba(201,160,107,0.07);
+  color: var(--gold-light); font-size: 0.72rem;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  padding: 7px 20px; border-radius: 100px;
+  margin-bottom: 3rem;
+  animation: rise 1.2s 0.3s both;
+}
+
+.s1-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3.2rem, 11vw, 7.5rem);
+  font-weight: 300; line-height: 1.0;
+  letter-spacing: -0.02em;
+  animation: rise 1.2s 0.6s both;
+}
+.s1-title .italic-line {
+  display: block;
+  font-style: italic; font-weight: 600;
+  background: linear-gradient(130deg, var(--gold-light) 0%, var(--rose-light) 55%, var(--gold) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.s1-title .thin-line {
+  display: block; font-weight: 300; font-size: 0.55em;
+  color: rgba(255,255,255,0.5); letter-spacing: 0.04em;
+  margin-bottom: 0.15em;
+}
+
+.s1-date {
+  font-size: 0.75rem; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--text-dim); margin-top: 1.8rem;
+  animation: rise 1.2s 0.9s both;
+}
+
+.s1-btn {
+  margin-top: 3.5rem;
+  padding: 1rem 3.2rem;
+  background: transparent;
+  border: 1px solid rgba(201,160,107,0.45);
+  color: var(--gold-light);
+  font-family: 'Jost', sans-serif; font-weight: 400;
+  font-size: 0.82rem; letter-spacing: 3px; text-transform: uppercase;
+  border-radius: 100px; cursor: pointer;
+  transition: all 0.4s ease;
+  position: relative; overflow: hidden;
+  animation: rise 1.2s 1.2s both;
+}
+.s1-btn::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(201,160,107,0.18), rgba(200,107,133,0.12));
+  opacity: 0; transition: opacity 0.4s;
+}
+.s1-btn:hover::after { opacity: 1; }
+.s1-btn:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: 0 16px 50px rgba(201,160,107,0.22); }
+
+.s1-scroll {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: var(--text-dim); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;
+  animation: rise 1.2s 1.8s both;
+}
+.chevron {
+  width: 18px; height: 18px;
+  border-right: 1.5px solid rgba(201,160,107,0.5);
+  border-bottom: 1.5px solid rgba(201,160,107,0.5);
+  transform: rotate(45deg);
+  animation: bob 2s ease-in-out infinite;
+}
+@keyframes bob { 0%,100%{transform:rotate(45deg) translateY(0)} 50%{transform:rotate(45deg) translateY(5px)} }
+
+/* ────────────────────────────────────────────
+   SCREEN 2 — PHOTO UPLOAD
+──────────────────────────────────────────── */
+#s2 {
+  background: var(--dark2);
+  justify-content: flex-start; padding: 0;
+}
+
+.s2-inner {
+  width: 100%; max-width: 860px;
+  margin: 0 auto; padding: 3rem 2rem 4rem;
+}
+
+.sec-eyebrow {
+  font-size: 0.68rem; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.8rem;
+}
+.sec-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 300; font-style: italic;
+  color: rgba(255,255,255,0.9); margin-bottom: 0.5rem;
+}
+.sec-sub {
+  font-size: 0.82rem; color: var(--text-dim);
+  line-height: 1.7; margin-bottom: 2.5rem;
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px; margin-bottom: 2.5rem;
+}
+@media(max-width:520px){ .photo-grid { grid-template-columns: repeat(2,1fr); } }
+
+.photo-slot {
+  aspect-ratio: 1;
+  background: rgba(255,255,255,0.03);
+  border: 1.5px dashed rgba(201,160,107,0.2);
+  border-radius: 10px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 8px; cursor: pointer;
+  position: relative; overflow: hidden;
+  transition: all 0.35s ease;
+}
+.photo-slot:hover { border-color: rgba(201,160,107,0.5); background: rgba(201,160,107,0.05); }
+.photo-slot input[type=file] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 3; width: 100%; height: 100%;
+}
+.photo-slot img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; border-radius: 9px; z-index: 2;
+}
+.slot-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.8rem; color: var(--gold);
+  position: absolute; top: 8px; left: 10px; z-index: 4;
+}
+.slot-icon { font-size: 1.6rem; }
+.slot-lbl { font-size: 0.72rem; color: var(--text-dim); text-align: center; padding: 0 8px; }
+
+.nav-row {
+  display: flex; gap: 12px; flex-wrap: wrap;
+}
+.btn-outline {
+  padding: 0.85rem 2rem; border-radius: 100px; cursor: pointer;
+  font-family: 'Jost', sans-serif; font-size: 0.8rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.14); background: transparent; color: var(--text-dim);
+}
+.btn-outline:hover { border-color: rgba(255,255,255,0.35); color: #fff; }
+.btn-gold {
+  padding: 0.85rem 2.4rem; border-radius: 100px; cursor: pointer;
+  font-family: 'Jost', sans-serif; font-size: 0.8rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  transition: all 0.3s ease;
+  border: 1px solid var(--gold);
+  background: rgba(201,160,107,0.12); color: var(--gold-light);
+}
+.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,160,107,0.22); background: rgba(201,160,107,0.2); }
+
+/* ────────────────────────────────────────────
+   SCREEN 3 — LETTER (the heart)
+──────────────────────────────────────────── */
+#s3 {
+  background:
+    radial-gradient(ellipse 80% 50% at 10% 90%, rgba(201,160,107,0.07) 0%, transparent 60%),
+    var(--dark);
+  justify-content: flex-start; padding: 0;
+}
+
+.letter-wrap {
+  max-width: 680px; width: 100%;
+  margin: 0 auto; padding: 4rem 2rem 5rem;
+}
+
+.letter-meta {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 3rem;
+}
+.letter-line {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,160,107,0.4), transparent);
+}
+.letter-meta-text {
+  font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); white-space: nowrap;
+}
+
+.letter-opening {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 6vw, 3.8rem);
+  font-weight: 300; line-height: 1.1;
+  margin-bottom: 3rem;
+}
+.letter-opening .hl {
+  font-style: italic; font-weight: 600;
+  background: linear-gradient(120deg, var(--gold-light), var(--rose-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.lp {
+  font-size: 1.02rem; line-height: 2;
+  color: var(--text-mid);
+  margin-bottom: 1.8rem;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.lp.on { opacity: 1; transform: translateY(0); }
+.lp em {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-size: 1.12em;
+  color: var(--gold-light);
+}
+.lp strong { font-weight: 500; color: var(--text-bright); }
+
+.verse-block {
+  border-left: 2px solid var(--gold-dim);
+  padding: 1.2rem 1.6rem;
+  margin: 2.5rem 0;
+  background: rgba(201,160,107,0.05);
+  border-radius: 0 10px 10px 0;
+  opacity: 0; transform: translateX(-16px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.verse-block.on { opacity: 1; transform: translateX(0); }
+.verse-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem; font-style: italic; font-weight: 300;
+  color: var(--gold-light); line-height: 1.75;
+}
+.verse-ref {
+  font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold); margin-top: 0.7rem;
+}
+
+.goals-block {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 16px; padding: 2rem;
+  margin: 2.5rem 0;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.goals-block.on { opacity: 1; transform: translateY(0); }
+.goals-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem; font-style: italic;
+  color: var(--gold-light); margin-bottom: 1.2rem;
+}
+.goal-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.92rem; color: var(--text-mid); line-height: 1.6;
+}
+.goal-item:last-child { border-bottom: none; }
+.goal-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold); flex-shrink: 0; margin-top: 7px;
+}
+
+.letter-sign {
+  margin-top: 3rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem; font-style: italic;
+  color: var(--gold-light);
+  opacity: 0; transition: opacity 0.8s 0.3s ease;
+}
+.letter-sign.on { opacity: 1; }
+.letter-sign-sub {
+  font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--text-dim); margin-top: 0.4rem;
+  font-family: 'Jost', sans-serif; font-style: normal;
+}
+
+.letter-nav { display: flex; gap: 12px; margin-top: 3rem; flex-wrap: wrap; }
+
+/* ────────────────────────────────────────────
+   SCREEN 4 — CAKE
+──────────────────────────────────────────── */
+#s4 {
+  background:
+    radial-gradient(ellipse 100% 80% at 50% 50%, rgba(200,107,133,0.12) 0%, transparent 60%),
+    var(--dark2);
+  text-align: center;
+}
+.s4-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  font-weight: 300; font-style: italic; color: var(--gold-light);
+  margin-bottom: 0.4rem;
+}
+.s4-sub { font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 2rem; }
+
+#cakeCanvas { display: block; margin: 0 auto; max-width: 320px; width: 100%; cursor: pointer; }
+
+.blow-hint {
+  font-size: 0.82rem; letter-spacing: 1px; color: var(--text-dim);
+  margin-top: 1rem; min-height: 1.4em; transition: color 0.4s;
+}
+
+.wish-area {
+  max-width: 420px; width: 100%; margin: 1.5rem auto 0;
+  display: none; flex-direction: column; gap: 10px;
+}
+.wish-area.show { display: flex; }
+.wish-area textarea {
+  width: 100%; padding: 1rem 1.2rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,160,107,0.3);
+  border-radius: 12px; color: #fff;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem; font-style: italic;
+  resize: none; height: 100px; outline: none;
+  transition: border-color 0.3s; line-height: 1.7;
+}
+.wish-area textarea:focus { border-color: var(--gold); }
+.wish-area textarea::placeholder { color: rgba(255,255,255,0.2); }
+.wish-send { padding: 0.85rem; border-radius: 100px; cursor: pointer; }
+
+/* ────────────────────────────────────────────
+   SCREEN 5 — FINALE
+──────────────────────────────────────────── */
+#s5 {
+  background: var(--dark);
+  justify-content: flex-start; padding: 0;
+}
+.finale-wrap {
+  max-width: 700px; width: 100%;
+  margin: 0 auto; padding: 4rem 2rem 5rem;
+  text-align: center;
+}
+
+.finale-big {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3.5rem, 12vw, 8rem);
+  font-weight: 300; line-height: 0.95;
+  margin-bottom: 0.3rem;
+}
+.finale-big .grad {
+  font-style: italic; font-weight: 600;
+  background: linear-gradient(135deg, var(--gold-light), var(--rose-light), var(--gold));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.photo-circle {
+  width: 150px; height: 150px; border-radius: 50%;
+  margin: 2.5rem auto;
+  border: 2px solid rgba(201,160,107,0.35);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3rem;
+  position: relative;
+}
+.photo-circle::after {
+  content: '';
+  position: absolute; inset: -4px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,160,107,0.18);
+}
+.photo-circle img { width: 100%; height: 100%; object-fit: cover; }
+
+.wish-reveal {
+  background: rgba(200,107,133,0.07);
+  border: 1px solid rgba(200,107,133,0.2);
+  border-radius: 14px; padding: 1.4rem 1.8rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.12rem; font-style: italic;
+  color: var(--rose-light); line-height: 1.75;
+  margin: 0 0 2rem; display: none; text-align: left;
+}
+.wish-reveal.show { display: block; }
+.wish-reveal::before {
+  content: '\201C'; font-size: 2.5rem; color: var(--rose);
+  font-family: 'Cormorant Garamond', serif;
+  line-height: 0; vertical-align: -0.35em; margin-right: 2px;
+}
+
+.fin-cards {
+  display: flex; flex-direction: column; gap: 12px;
+  margin: 2rem 0; text-align: left;
+}
+.fin-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px; padding: 1.4rem 1.6rem;
+  position: relative; overflow: hidden;
+}
+.fin-card::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(to bottom, var(--gold), var(--rose));
+}
+.fc-icon { font-size: 1.3rem; margin-bottom: 0.5rem; }
+.fc-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem; font-style: italic; color: var(--gold-light);
+  margin-bottom: 0.5rem;
+}
+.fc-body { font-size: 0.9rem; line-height: 1.85; color: var(--text-mid); }
+
+.finale-footer {
+  margin-top: 3rem; padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: 0.72rem; color: var(--text-dim);
+  letter-spacing: 1.5px; line-height: 2.2; text-transform: uppercase;
+}
+.finale-footer span { color: var(--gold); }
+
+/* ────────────────────────────────────────────
+   SCREEN 6 — PUZZLE
+──────────────────────────────────────────── */
+#s6 {
+  background:
+    radial-gradient(ellipse 90% 70% at 70% 30%, rgba(200,107,133,0.14) 0%, transparent 65%),
+    var(--dark);
+  justify-content: flex-start; padding: 0;
+}
+
+.puzzle-wrap {
+  max-width: 680px; width: 100%;
+  margin: 0 auto; padding: 4rem 2rem 5rem;
+  text-align: center;
+}
+
+.puzzle-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 300; font-style: italic;
+  color: var(--gold-light); margin-bottom: 1.5rem;
+}
+
+.puzzle-desc {
+  font-size: 0.95rem; line-height: 1.8;
+  color: var(--text-mid); margin-bottom: 2rem;
+}
+
+.cipher-block {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(201,160,107,0.25);
+  border-radius: 14px; padding: 2rem;
+  margin-bottom: 2rem;
+  font-family: 'Jost', sans-serif;
+}
+
+.cipher-text {
+  font-size: 1.05rem;
+  color: var(--gold-light);
+  letter-spacing: 0.08em;
+  line-height: 2;
+  margin-bottom: 1.5rem;
+  word-break: break-word;
+}
+
+.cipher-hint {
+  font-size: 0.85rem; color: var(--text-dim);
+  font-style: italic; letter-spacing: 1px;
+  padding: 1rem; background: rgba(201,160,107,0.04);
+  border-radius: 8px;
+}
+
+.input-group {
+  display: flex; flex-direction: column; gap: 12px;
+  margin: 2rem 0;
+}
+
+.puzzle-input {
+  width: 100%; max-width: 400px; margin: 0 auto;
+  padding: 1rem 1.2rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,160,107,0.3);
+  border-radius: 100px; color: #fff;
+  font-family: 'Jost', sans-serif; font-size: 1rem;
+  text-align: center; letter-spacing: 0.05em;
+  outline: none; transition: all 0.3s;
+}
+.puzzle-input:focus {
+  border-color: var(--gold);
+  background: rgba(201,160,107,0.08);
+  box-shadow: 0 0 20px rgba(201,160,107,0.15);
+}
+.puzzle-input::placeholder { color: rgba(255,255,255,0.25); }
+
+.btn-submit {
+  padding: 0.9rem 3rem;
+  background: linear-gradient(135deg, rgba(200,107,133,0.2), rgba(201,160,107,0.15));
+  border: 1px solid rgba(200,107,133,0.5);
+  color: var(--rose-light);
+  font-family: 'Jost', sans-serif; font-size: 0.85rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  border-radius: 100px; cursor: pointer;
+  transition: all 0.3s ease;
+}
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(200,107,133,0.25);
+  background: linear-gradient(135deg, rgba(200,107,133,0.3), rgba(201,160,107,0.25));
+}
+.btn-submit:disabled {
+  opacity: 0.5; cursor: not-allowed;
+}
+
+.puzzle-feedback {
+  font-size: 0.9rem; margin-top: 1rem; min-height: 1.2em;
+  transition: all 0.4s ease;
+}
+.puzzle-feedback.error { color: #ff6b6b; }
+.puzzle-feedback.success { color: #51cf66; }
+
+.puzzle-hint-btn {
+  margin-top: 1rem;
+  padding: 0.7rem 1.8rem;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--text-dim);
+  font-family: 'Jost', sans-serif; font-size: 0.75rem;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  border-radius: 100px; cursor: pointer;
+  transition: all 0.3s;
+}
+.puzzle-hint-btn:hover { border-color: rgba(255,255,255,0.35); color: #fff; }
+
+.success-screen {
+  text-align: center;
+  display: none;
+}
+.success-screen.show { display: block; }
+
+.success-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  font-weight: 600; font-style: italic;
+  background: linear-gradient(135deg, var(--gold-light), var(--rose-light), var(--gold));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 1rem;
+}
+
+.success-msg {
+  font-size: 1.05rem; line-height: 1.9;
+  color: var(--text-mid); max-width: 500px;
+  margin: 0 auto 2rem;
+}
+
+.success-emoji {
+  font-size: 4rem; margin-bottom: 1.5rem;
+  animation: bounce-emoji 1s ease-in-out infinite;
+}
+@keyframes bounce-emoji { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+/* ── GLOBAL ANIMATION ── */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── PROGRESS DOTS ── */
+.progress-dots {
+  position: fixed; right: 1.5rem; top: 50%; transform: translateY(-50%);
+  z-index: 999; display: flex; flex-direction: column; gap: 8px;
+}
+.dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  transition: all 0.4s ease; cursor: pointer;
+}
+.dot.active {
+  background: var(--gold);
+  box-shadow: 0 0 8px rgba(201,160,107,0.6);
+  transform: scale(1.4);
+}
+
+/* ── MUSIC BUTTON ── */
+.music-btn {
+  position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 999;
+  width: 42px; height: 42px; border-radius: 50%;
+  background: rgba(201,160,107,0.12);
+  border: 1px solid rgba(201,160,107,0.35);
+  color: var(--gold-light); font-size: 1.1rem;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s; backdrop-filter: blur(8px);
+}
+.music-btn:hover { background: rgba(201,160,107,0.22); transform: scale(1.08); }
+</style>
+</head>
+<body>
+
+<canvas id="starCanvas"></canvas>
+<canvas id="fwCanvas"></canvas>
+
+<!-- Progress -->
+<div class="progress-dots" id="progressDots">
+  <div class="dot active" onclick="goTo(1)"></div>
+  <div class="dot" onclick="goTo(2)"></div>
+  <div class="dot" onclick="goTo(3)"></div>
+  <div class="dot" onclick="goTo(4)"></div>
+  <div class="dot" onclick="goTo(5)"></div>
+  <div class="dot" onclick="goTo(6)"></div>
+</div>
+
+<!-- Music -->
+<button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="Toggle musik">♪</button>
+<audio id="bgMusic" loop>
+  <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ════════════ SCREEN 1: COVER ════════════ -->
+<section class="screen active" id="s1">
+  <div class="s1-late">⏰ &nbsp;Terlambat 3 jam · Tapi tulus tak terhingga</div>
+  <h1 class="s1-title">
+    <span class="thin-line">Happy Birthday,</span>
+    <span class="italic-line">Luvi Hana Margareta</span>
+  </h1>
+  <p class="s1-date">7 &nbsp;·&nbsp; Juni &nbsp;·&nbsp; 2026</p>
+  <button class="s1-btn" onclick="goTo(2)">Buka Hadiahmu &nbsp;→</button>
+  <div class="s1-scroll">
+    <div class="chevron"></div>
+    <span>mulai</span>
+  </div>
+</section>
+
+<!-- ════════════ SCREEN 2: PHOTOS ════════════ -->
+<section class="screen" id="s2">
+  <div class="s2-inner">
+    <p class="sec-eyebrow">Langkah 1 dari 5</p>
+    <h2 class="sec-title">Kenangan yang kita punya ✨</h2>
+    <p class="sec-sub">
+      Upload foto-foto yang kamu suka — foto kita, senyummu, atau momen apapun yang berkesan.<br>
+      Kalau belum ada foto, tidak apa-apa, lewati saja.
+    </p>
+
+    <div class="photo-grid" id="photoGrid"></div>
+
+    <div class="nav-row">
+      <button class="btn-outline" onclick="goTo(1)">← Kembali</button>
+      <button class="btn-outline" onclick="goTo(3)">Lewati saja</button>
+      <button class="btn-gold" onclick="goTo(3)">Lanjut → Surat Untukmu</button>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ SCREEN 3: LETTER ════════════ -->
+<section class="screen" id="s3">
+  <div class="letter-wrap">
+    <div class="letter-meta">
+      <div class="letter-line"></div>
+      <div class="letter-meta-text">7 Juni 2026 &nbsp;·&nbsp; Untukmu, Luvi</div>
+      <div class="letter-line"></div>
+    </div>
+
+    <h2 class="letter-opening">
+      Hei, <span class="hl">Luvi Hana.</span><br>
+      <span style="font-weight:300;font-size:0.65em;color:rgba(255,255,255,0.55);">Ada hal yang perlu kamu dengar.</span>
+    </h2>
+
+    <div id="letterContent">
+
+      <p class="lp">Aku tahu kamu tidak terlalu suka hari ulang tahun. Mungkin karena selama ini hari itu terasa seperti hari biasa — yang hanya lewat tanpa banyak yang peduli. Atau mungkin karena ada bagian dari hatimu yang masih berduka, yang masih kangen, yang masih bertanya kenapa harus merayakan sesuatu ketika ada bagian besar dari hidupmu yang terasa kosong.</p>
+
+      <p class="lp">Aku tidak akan pura-pura mengerti segalanya. Tapi aku mau bilang satu hal dulu sebelum yang lain: <em>terima kasih sudah ada sampai hari ini.</em> Serius. Untuk semua hari yang berat yang kamu lewati, untuk semua malam yang kamu hadapi sendirian, untuk semua tangis yang mungkin tidak ada yang tahu — kamu <strong>berhasil melewatinya semua</strong>. Dan itu bukan hal kecil.</p>
+
+      <p class="lp">Kita baru dekat sejak Agustus tahun lalu. Waktu yang singkat? Iya. Tapi cukup bagiku untuk melihat siapa kamu sebenarnya — bukan dari apa yang kamu ceritakan, tapi dari cara kamu memilih untuk tetap baik meskipun hidupmu tidak selalu baik padamu. Kamu itu kuat, Luvi. Bukan kuat yang pamer — tapi kuat yang diam-diam, yang terus jalan meski lutut gemetar.</p>
+
+      <div class="verse-block">
+        <p class="verse-text">"Sebab Aku ini mengetahui rancangan-rancangan apa yang ada pada-Ku mengenai kamu, demikianlah firman TUHAN, yaitu rancangan damai sejahtera dan bukan rancangan kecelakaan, untuk memberikan kepadamu hari depan yang penuh harapan."</p>
+        <p class="verse-ref">Yeremia 29 : 11</p>
+      </div>
+
+      <p class="lp">Aku percaya ayat ini bukan cuma kata-kata di atas kertas. Aku percaya Tuhan punya rencana buat kamu — bahkan di tengah semua yang terasa tidak adil, di tengah semua yang sudah kamu kehilangan. <em>Dia tidak lupa kamu, Luvi.</em> Dan aku juga tidak.</p>
+
+      <p class="lp">Soal masa lalu — tentang rasa sakit yang pernah menghantam, tentang hal-hal yang meninggalkan luka dalam, tentang kehilangan yang tidak pernah benar-benar ada yang menggantikan — aku tidak akan bilang "lupakan saja." Karena luka itu nyata, dan kamu berhak merasakannya. Tapi semakin kita bertambah umur, ada sebuah kebebasan yang bisa kita pilih: <em>kita boleh bergerak maju.</em> Bukan meninggalkan kenangan, tapi melepaskan beban yang bukan lagi milik kita untuk dipikul.</p>
+
+      <p class="lp">Dan aku? Aku mau jalan maju itu bareng kamu.</p>
+
+      <div class="goals-block">
+        <p class="goals-title">Goals kita — hal-hal yang ingin kita ciptakan bersama 🌱</p>
+        <div class="goal-item"><div class="goal-dot"></div><span>Tertawa bareng tanpa harus menjelaskan kenapa itu lucu — dan sudah terasa cukup.</span></div>
+        <div class="goal-item"><div class="goal-dot"></div><span>Pergi ke tempat yang belum pernah kita kunjungi berdua — tidak perlu jauh, yang penting bersama.</span></div>
+        <div class="goal-item"><div class="goal-dot"></div><span>Membangun kebiasaan saling support — di hari yang baik maupun yang berat.</span></div>
+        <div class="goal-item"><div class="goal-dot"></div><span>Berdoa dan bersyukur bareng — karena iman yang dibagi terasa lebih ringan.</span></div>
+        <div class="goal-item"><div class="goal-dot"></div><span>Melihat kamu tersenyum dengan tulus — dan tahu aku adalah bagian dari alasannya.</span></div>
+      </div>
+
+      <p class="lp">Oh — dan satu hal lagi yang perlu kamu tahu: aku minta maaf belum bisa kasih sesuatu yang besar dan nyata. Belum bisa hadir dengan hadiah yang bisa kamu pegang, belum bisa ada di sampingmu secara fisik hari ini. Tapi aku mau kamu tahu — <strong>aku sedang mempersiapkan sesuatu. Tunggu saatnya tiba.</strong> Dan waktu itu tiba, aku harap kamu ingat bahwa aku sudah memikirkannya sejak sekarang.</p>
+
+      <p class="lp">Satu hal yang aku bangga-banggakan dengan serius: <em>website ini aku buat jauh lebih serius dari skripsiku sendiri.</em> Hahaha. Tapi sungguh — tidak ada satupun baris kode di sini yang aku tulis dengan setengah hati. Setiap katanya aku pikirkan. Karena kamu layak mendapat hal yang dibuat dengan penuh usaha.</p>
+
+      <div class="verse-block">
+        <p class="verse-text">"Kasih itu sabar; kasih itu murah hati; ia tidak cemburu. Ia tidak memegahkan diri dan tidak sombong. Ia tidak melakukan yang tidak sopan dan tidak mencari keuntungan diri sendiri... Ia menutupi segala sesuatu, percaya segala sesuatu, mengharapkan segala sesuatu, sabar menanggung segala sesuatu."</p>
+        <p class="verse-ref">1 Korintus 13 : 4–7</p>
+      </div>
+
+      <p class="lp">Ini standar yang aku mau kejar. Bukan karena aku sempurna — jauh dari itu — tapi karena kamu layak mendapat seseorang yang sungguh-sungguh berusaha. Dan aku mau jadi orang itu.</p>
+
+      <p class="lp">Selamat ulang tahun, Luvi Hana Margareta. <em>Semoga tahun ini jadi tahun di mana kamu akhirnya merasakan betapa berharganya dirimu.</em> Semoga kamu diberi kedamaian yang sesungguhnya — bukan yang berpura-pura, tapi yang mengalir dari dalam. Semoga ada banyak momen yang membuatmu tersenyum tanpa alasan. Dan semoga kamu tahu: di suatu tempat, ada seseorang yang mendoakanmu hari ini dengan sepenuh hati. 💛</p>
+
+      <div class="letter-sign">
+        — Seseorang yang bersyukur diizinkan masuk ke hidupmu
+        <div class="letter-sign-sub">7 Juni 2026</div>
+      </div>
+    </div>
+
+    <div class="letter-nav">
+      <button class="btn-outline" onclick="goTo(2)">← Foto</button>
+      <button class="btn-gold" onclick="goTo(4)">Tiup Lilin → 🕯️</button>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ SCREEN 4: CAKE ════════════ -->
+<section class="screen" id="s4">
+  <div class="s4-title">Buat Satu Permintaan</div>
+  <div class="s4-sub">Tiup lilinnya — lalu tuliskan harapanmu sendiri</div>
+  <canvas id="cakeCanvas" width="320" height="310"></canvas>
+  <p class="blow-hint" id="blowHint">✦ &nbsp;Ketuk lilin untuk meniup &nbsp;✦</p>
+  <div class="wish-area" id="wishArea">
+    <textarea id="wishTxt" placeholder="Tuliskan harapanmu di sini... 🌙" maxlength="220"></textarea>
+    <button class="btn-gold wish-send" onclick="finalizeWish()">Kirim Harapan → 🌠</button>
+  </div>
+</section>
+
+<!-- ════════════ SCREEN 5: FINALE ════════════ -->
+<section class="screen" id="s5">
+  <div class="finale-wrap">
+    <p class="sec-eyebrow" style="text-align:center">🎉 &nbsp;7 Juni 2026</p>
+    <h2 class="finale-big">
+      Happy<br><span class="grad">Birthday!</span>
+    </h2>
+
+    <div class="photo-circle" id="photoCircle">🌸</div>
+
+    <div class="wish-reveal" id="wishReveal"></div>
+
+    <div class="fin-cards">
+      <div class="fin-card">
+        <div class="fc-icon">🕊️</div>
+        <div class="fc-title">Untuk Luvi yang kuat</div>
+        <div class="fc-body">Kamu telah melewati banyak hal yang kebanyakan orang tidak tahu. Dan di hari ini, aku ingin kamu berdiri sedikit lebih tegak — karena kamu sudah lebih dari membuktikan bahwa kamu sanggup.</div>
+      </div>
+      <div class="fin-card">
+        <div class="fc-icon">🤝</div>
+        <div class="fc-title">Untuk kita yang baru mulai</div>
+        <div class="fc-body">Kita punya banyak yang ingin kita bangun bersama. Dan aku tidak sabar menjalaninya — satu hari dalam satu waktu, bersama kamu. Jangan risau. Aku di sini.</div>
+      </div>
+      <div class="fin-card">
+        <div class="fc-icon">🌅</div>
+        <div class="fc-title">Untuk masa depan yang menanti</div>
+        <div class="fc-body">Ada banyak hal indah yang belum terjadi. Banyak tawa yang belum terdengar. Banyak perjalanan yang belum dimulai. Dan semua itu sedang menunggumu, Luvi — termasuk aku.</div>
+      </div>
+    </div>
+
+    <div class="finale-footer">
+      Dibuat dengan sepenuh hati &nbsp;·&nbsp; terlambat 3 jam tapi tulus selamanya<br>
+      <span>Selamat Ulang Tahun, Luvi Hana Margareta</span><br>
+      Tuhan memberkatimu selalu 🙏
+    </div>
+
+    <button class="btn-gold" style="margin-top:2rem" onclick="goTo(6)">Ada Satu Lagi... 🔐 →</button>
+  </div>
+</section>
+
+<!-- ════════════ SCREEN 6: PUZZLE ════════════ -->
+<section class="screen" id="s6">
+  <div class="puzzle-wrap">
+    <p class="sec-eyebrow">Langkah terakhir</p>
+    <h2 class="puzzle-title">Sebelum ada surprise selanjutnya... 🔓</h2>
+    
+    <div class="puzzle-desc">
+      Ada sesuatu yang aku encrypt khusus untukmu. Pecahkan kode ini dan kamu akan mendapat pesan yang lebih istimewa lagi.
+      <br><strong>Hanya kamu yang tahu jawabannya.</strong>
+    </div>
+
+    <div class="cipher-block">
+      <p class="cipher-text">GSRH RH MLG Z WVGV. R ORVH RM HVZIVSK LU GSV HVEVMGS WVB LU GSV HVEVMGS MLMGS.</p>
+      <div class="cipher-hint">💡 The key is hidden in the alphabet itself.</div>
+    </div>
+
+    <div class="input-group">
+      <input type="text" id="puzzleInput" class="puzzle-input" placeholder="Ketik jawaban mu di sini..." autocomplete="off">
+      <button class="btn-submit" onclick="checkAnswer()">Cek Jawaban</button>
+      <button class="puzzle-hint-btn" onclick="toggleHint()">Butuh Bantuan?</button>
+      <div class="puzzle-feedback" id="feedback"></div>
+    </div>
+
+    <div class="hint-box" id="hintBox" style="display:none; margin-top:1.5rem;">
+      <div style="background:rgba(201,160,107,0.07); border:1px solid rgba(201,160,107,0.2); border-radius:12px; padding:1.2rem; text-align:left; color:var(--text-mid); font-size:0.92rem; line-height:1.8;">
+        <strong style="color:var(--gold-light)">Hint:</strong><br>
+        Lihat setiap huruf dalam cipher. Setiap huruf digeser dengan jumlah yang sama dalam alphabet. Coba hitung berapa banyak geseran dari A ke G, dari Z ke O... Polanya akan terlihat. ✨
+      </div>
+    </div>
+
+    <div class="success-screen" id="successScreen">
+      <div class="success-emoji">🎊</div>
+      <h3 class="success-title">Berhasil!</h3>
+      <div class="success-msg">
+        <strong>Kamu memecahkan kodenya!</strong><br><br>
+        Aku lega kamu sampai ke sini. Ini berarti kamu benar-benar membaca semua yang aku tulis dengan serius. Terima kasih, Luvi. Ini menjadi penting karena kamu penting. 💛
+      </div>
+      <p style="font-size:0.85rem; color:var(--text-dim); margin-top:2rem;">
+        Sekarang tunggu surprise berikutnya darimu — aku mau memberikan sesuatu yang nyata dan istimewa. Jangan pergi kemana-mana 😊
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ══════════════════════════════════════════
+   STAR CANVAS
+══════════════════════════════════════════ */
+const sc = document.getElementById('starCanvas');
+const sctx = sc.getContext('2d');
+let SW, SH, stars = [];
+
+function initStars(){
+  SW = sc.width = window.innerWidth;
+  SH = sc.height = window.innerHeight;
+  stars = Array.from({length: 200}, () => ({
+    x: Math.random()*SW, y: Math.random()*SH,
+    r: Math.random()*1.3+0.2,
+    a: Math.random()*0.7+0.1,
+    da: (Math.random()-0.5)*0.007,
+    vy: Math.random()*0.15+0.03,
+    hue: Math.random()<0.55 ? 38 : 340
+  }));
+}
+function animStars(){
+  sctx.clearRect(0,0,SW,SH);
+  stars.forEach(s=>{
+    s.a += s.da; if(s.a<0.08||s.a>0.75) s.da*=-1;
+    s.y += s.vy; if(s.y>SH+4){ s.y=-4; s.x=Math.random()*SW; }
+    sctx.beginPath(); sctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    sctx.fillStyle=`hsla(${s.hue},65%,80%,${s.a})`; sctx.fill();
+  });
+  requestAnimationFrame(animStars);
+}
+window.addEventListener('resize', initStars);
+initStars(); animStars();
+
+/* ══════════════════════════════════════════
+   FIREWORKS
+══════════════════════════════════════════ */
+const fwc = document.getElementById('fwCanvas');
+const fwctx = fwc.getContext('2d');
+let FW, FH, fwParts = [], fwOn = false, fwCount = 0;
+
+function resizeFW(){
+  FW = fwc.width = window.innerWidth;
+  FH = fwc.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeFW); resizeFW();
+
+const fwCols=['#ecdbb8','#f0c4cf','#fde68a','#a5f3fc','#c084fc','#6ee7b7','#fb923c'];
+
+class FWPart {
+  constructor(x,y,col){
+    this.x=x; this.y=y; this.col=col;
+    const a=Math.random()*Math.PI*2, sp=Math.random()*6+1.5;
+    this.vx=Math.cos(a)*sp; this.vy=Math.sin(a)*sp-1;
+    this.life=1; this.dec=Math.random()*0.02+0.009;
+    this.r=Math.random()*2.5+0.8;
+  }
+  step(){ this.x+=this.vx; this.y+=this.vy; this.vy+=0.07; this.life-=this.dec; }
+  draw(){
+    fwctx.globalAlpha=Math.max(0,this.life*0.85);
+    fwctx.fillStyle=this.col;
+    fwctx.beginPath(); fwctx.arc(this.x,this.y,this.r,0,Math.PI*2); fwctx.fill();
+    fwctx.globalAlpha=1;
+  }
+}
+
+function burst(){
+  if(fwCount>22||!fwOn) return;
+  fwCount++;
+  const x=FW*0.12+Math.random()*FW*0.76;
+  const y=FH*0.04+Math.random()*FH*0.48;
+  const col=fwCols[Math.floor(Math.random()*fwCols.length)];
+  for(let i=0;i<75;i++) fwParts.push(new FWPart(x,y,col));
+  setTimeout(burst, Math.random()*800+100);
+}
+
+function animFW(){
+  if(fwOn){
+    fwctx.fillStyle='rgba(8,6,16,0.2)';
+    fwctx.fillRect(0,0,FW,FH);
+  } else {
+    fwctx.clearRect(0,0,FW,FH);
+  }
+  for(let i=fwParts.length-1;i>=0;i--){
+    fwParts[i].step(); fwParts[i].draw();
+    if(fwParts[i].life<=0) fwParts.splice(i,1);
+  }
+  requestAnimationFrame(animFW);
+}
+animFW();
+
+/* ══════════════════════════════════════════
+   SCREEN NAV
+══════════════════════════════════════════ */
+let cur = 1;
+function goTo(n){
+  if(n===cur) return;
+  const prev = document.getElementById('s'+cur);
+  prev.classList.remove('active');
+  cur = n;
+  const next = document.getElementById('s'+n);
+  next.classList.add('active');
+  updateDots();
+  if(n===3) initLetterReveal();
+  if(n===4){ drawCake(); candleLit=true; }
+  if(n===5){ fwOn=true; fwCount=0; fwParts=[]; burst(); syncFinale(); }
+  else { fwOn=false; }
+  if(n===6){ document.getElementById('puzzleInput').focus(); }
+}
+
+function updateDots(){
+  document.querySelectorAll('.dot').forEach((d,i)=>{
+    d.classList.toggle('active', i===cur-1);
+  });
+}
+
+/* ══════════════════════════════════════════
+   PHOTO GRID
+══════════════════════════════════════════ */
+const photoLabels=['Foto pertama kita','Senyummu','Momen spesial','Kita berdua','Hari yang indah','Kenangan favoritku'];
+const photos = {};
+
+function buildGrid(){
+  const g = document.getElementById('photoGrid');
+  g.innerHTML = '';
+  for(let i=1;i<=6;i++){
+    const d = document.createElement('div');
+    d.className='photo-slot'; d.id='ps'+i;
+    d.innerHTML=`<span class="slot-num">0${i}</span>
+      <input type="file" accept="image/*" onchange="loadPhoto(event,${i})">
+      <span class="slot-icon">📷</span>
+      <span class="slot-lbl">${photoLabels[i-1]}</span>`;
+    g.appendChild(d);
+  }
+}
+buildGrid();
+
+function loadPhoto(e,idx){
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    photos[idx]=ev.target.result;
+    const slot=document.getElementById('ps'+idx);
+    let img=slot.querySelector('img');
+    if(!img){img=document.createElement('img');slot.appendChild(img);}
+    img.src=ev.target.result;
+    slot.querySelector('.slot-icon').style.display='none';
+    slot.querySelector('.slot-lbl').style.display='none';
+  };
+  r.readAsDataURL(f);
+}
+
+/* ══════════════════════════════════════════
+   LETTER REVEAL
+══════════════════════════════════════════ */
+function initLetterReveal(){
+  const items = document.querySelectorAll('.lp, .verse-block, .goals-block, .letter-sign');
+  items.forEach((el,i)=>{
+    setTimeout(()=>el.classList.add('on'), i*160 + 200);
+  });
+}
+
+/* ══════════════════════════════════════════
+   CAKE
+══════════════════════════════════════════ */
+let candleLit = true;
+
+function drawCake(){
+  const c = document.getElementById('cakeCanvas');
+  const ctx = c.getContext('2d');
+  const CX = 160, W = 320, H = 310;
+
+  function rr(x,y,w,h,rx){
+    ctx.beginPath();
+    ctx.moveTo(x+rx,y);
+    ctx.lineTo(x+w-rx,y); ctx.quadraticCurveTo(x+w,y,x+w,y+rx);
+    ctx.lineTo(x+w,y+h-rx); ctx.quadraticCurveTo(x+w,y+h,x+w-rx,y+h);
+    ctx.lineTo(x+rx,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-rx);
+    ctx.lineTo(x,y+rx); ctx.quadraticCurveTo(x,y,x+rx,y);
+    ctx.closePath();
+  }
+
+  function render(lit){
+    ctx.clearRect(0,0,W,H);
+
+    // shadow
+    ctx.save(); ctx.globalAlpha=0.18;
+    ctx.fillStyle='#000';
+    ctx.beginPath(); ctx.ellipse(CX,280,108,14,0,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+
+    // bottom tier
+    const gb=ctx.createLinearGradient(40,220,280,265);
+    gb.addColorStop(0,'#7b3260'); gb.addColorStop(1,'#b5527a');
+    ctx.fillStyle=gb; rr(40,225,240,52,8); ctx.fill();
+
+    // top tier
+    const gt=ctx.createLinearGradient(60,158,260,215);
+    gt.addColorStop(0,'#9a3d6a'); gt.addColorStop(1,'#d06888');
+    ctx.fillStyle=gt; rr(60,162,200,60,8); ctx.fill();
+
+    // top face
+    ctx.fillStyle='#bc5875';
+    ctx.beginPath(); ctx.ellipse(CX,162,100,16,0,0,Math.PI*2); ctx.fill();
+
+    // frosting drips top
+    ctx.fillStyle='rgba(255,255,255,0.2)';
+    [85,110,140,170,200,228].forEach(x=>{
+      ctx.beginPath(); ctx.ellipse(x,162,9,16,0,0,Math.PI); ctx.fill();
+    });
+    // drips bottom
+    ctx.fillStyle='rgba(255,255,255,0.13)';
+    [70,105,140,175,210,245].forEach(x=>{
+      ctx.beginPath(); ctx.ellipse(x,225,8,14,0,0,Math.PI); ctx.fill();
+    });
+
+    // berries top tier
+    [[95,182,'#b02d2d'],[130,190,'#8b2020'],[160,183,'#b02d2d'],
+     [190,190,'#8b2020'],[222,182,'#b02d2d']].forEach(([x,y,col])=>{
+      ctx.fillStyle=col; ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,0.35)';
+      ctx.beginPath(); ctx.arc(x-1.5,y-2,1.4,0,Math.PI*2); ctx.fill();
+    });
+
+    // text on cake
+    ctx.save();
+    ctx.fillStyle='rgba(255,240,210,0.88)';
+    ctx.font="italic 12px 'Cormorant Garamond',serif";
+    ctx.textAlign='center';
+    ctx.fillText('Happy Birthday Luvi 🌸', CX, 208);
+    ctx.restore();
+
+    // candle
+    const cg=ctx.createLinearGradient(CX-6,105,CX+6,105);
+    cg.addColorStop(0,'#fde68a'); cg.addColorStop(0.5,'#f59e0b'); cg.addColorStop(1,'#fde68a');
+    ctx.fillStyle=cg; rr(CX-6,112,12,52,3); ctx.fill();
+    ctx.fillStyle='rgba(160,110,0,0.2)';
+    for(let y=117;y<162;y+=8) ctx.fillRect(CX-6,y,12,4);
+    // wick
+    ctx.strokeStyle='#5c3d00'; ctx.lineWidth=1.2;
+    ctx.beginPath(); ctx.moveTo(CX,112); ctx.lineTo(CX,108); ctx.stroke();
+
+    if(lit){
+      // outer glow pulse (simulate with alpha)
+      const t=Date.now()/600;
+      const glowA=0.28+Math.sin(t)*0.08;
+      const glow=ctx.createRadialGradient(CX,98,0,CX,98,54);
+      glow.addColorStop(0,`rgba(255,200,80,${glowA})`);
+      glow.addColorStop(1,'transparent');
+      ctx.fillStyle=glow; ctx.beginPath(); ctx.arc(CX,98,54,0,Math.PI*2); ctx.fill();
+
+      // flame
+      ctx.save();
+      const fg=ctx.createRadialGradient(CX,97,2,CX,100,20);
+      fg.addColorStop(0,'#fff9c0'); fg.addColorStop(0.35,'#ffcc44'); fg.addColorStop(1,'rgba(255,70,0,0)');
+      ctx.fillStyle=fg;
+      ctx.beginPath();
+      ctx.moveTo(CX,78);
+      ctx.bezierCurveTo(CX+11,87,CX+9,108,CX,112);
+      ctx.bezierCurveTo(CX-9,108,CX-11,87,CX,78);
+      ctx.fill();
+      // inner
+      ctx.fillStyle='rgba(255,255,230,0.55)';
+      ctx.beginPath();
+      ctx.moveTo(CX,85);
+      ctx.bezierCurveTo(CX+4,92,CX+3,107,CX,110);
+      ctx.bezierCurveTo(CX-3,107,CX-4,92,CX,85);
+      ctx.fill();
+      ctx.restore();
+    } else {
+      for(let k=0;k<4;k++){
+        ctx.save(); ctx.globalAlpha=0.1-k*0.018;
+        ctx.fillStyle='#bbb';
+        ctx.beginPath(); ctx.arc(CX+(k%2?3:-3),87-k*12,4+k*3,0,Math.PI*2); ctx.fill();
+        ctx.restore();
+      }
+    }
+  }
+
+  let rafId;
+  function loop(){ render(candleLit); rafId=requestAnimationFrame(loop); }
+  if(window._cakeRaf) cancelAnimationFrame(window._cakeRaf);
+  window._cakeRaf = requestAnimationFrame(loop);
+
+  c.onclick=()=>{
+    if(!candleLit) return;
+    candleLit=false;
+    document.getElementById('blowHint').textContent='🌬️  Fwuuuh... semua harapan sudah terkirim ke langit ✨';
+    document.getElementById('blowHint').style.color='var(--gold-light)';
+    document.getElementById('wishArea').classList.add('show');
+  };
+}
+
+let savedWish='';
+function finalizeWish(){
+  savedWish = document.getElementById('wishTxt').value.trim() || 'Semoga semua baik-baik saja 🌸';
+  goTo(5);
+}
+
+/* ══════════════════════════════════════════
+   FINALE
+══════════════════════════════════════════ */
+function syncFinale(){
+  const wr = document.getElementById('wishReveal');
+  if(savedWish){ wr.textContent=savedWish; wr.classList.add('show'); }
+
+  const pc = document.getElementById('photoCircle');
+  const keys = Object.keys(photos);
+  if(keys.length>0){
+    pc.innerHTML=`<img src="${photos[keys[0]]}" alt="foto">`;
+  }
+}
+
+/* ══════════════════════════════════════════
+   PUZZLE CIPHER (ROT-13)
+══════════════════════════════════════════ */
+function rot13(str) {
+  return str.replace(/[a-zA-Z]/g, function(c) {
+    return String.fromCharCode((c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
+  });
+}
+
+const correctAnswerEncrypted = rot13("THIS IS NOT A DATE. I LIES IN SEARCH OF THE SEVENTH DAY OF THE SEVENTH MONTH.");
+// The actual answer in plain text is: "THIS IS NOT A DATE. I LIES IN SEARCH OF THE SEVENTH DAY OF THE SEVENTH MONTH."
+
+function checkAnswer() {
+  const input = document.getElementById('puzzleInput').value.trim().toUpperCase();
+  const feedback = document.getElementById('feedback');
+  
+  if (input === '') {
+    feedback.textContent = 'Ketik jawabanmu dulu dong 👀';
+    feedback.className = 'puzzle-feedback error';
+    return;
+  }
+  
+  // ROT13 decode the input
+  const decodedInput = rot13(input);
+  
+  if (decodedInput.toUpperCase() === correctAnswerEncrypted.toUpperCase()) {
+    feedback.textContent = '✓ Benar! Kode berhasil dipecahkan!';
+    feedback.className = 'puzzle-feedback success';
+    setTimeout(() => {
+      document.querySelector('.puzzle-wrap > div:not(.success-screen)').style.display = 'none';
+      document.getElementById('successScreen').classList.add('show');
+    }, 500);
+  } else {
+    feedback.textContent = '✗ Belum tepat. Coba lagi! 🔐';
+    feedback.className = 'puzzle-feedback error';
+    document.getElementById('puzzleInput').shake = true;
+    document.getElementById('puzzleInput').style.animation = 'none';
+    setTimeout(() => {
+      document.getElementById('puzzleInput').style.animation = 'shake 0.3s ease';
+    }, 10);
+  }
+}
+
+// Add shake animation
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+`;
+document.head.appendChild(style);
+
+function toggleHint() {
+  const hintBox = document.getElementById('hintBox');
+  if (hintBox.style.display === 'none') {
+    hintBox.style.display = 'block';
+  } else {
+    hintBox.style.display = 'none';
+  }
+}
+
+// Allow Enter key to submit
+document.addEventListener('DOMContentLoaded', () => {
+  const puzzleInput = document.getElementById('puzzleInput');
+  if (puzzleInput) {
+    puzzleInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') checkAnswer();
+    });
+  }
+});
+
+/* ══════════════════════════════════════════
+   MUSIC
+══════════════════════════════════════════ */
+let musicOn = false;
+function toggleMusic(){
+  const aud = document.getElementById('bgMusic');
+  const btn = document.getElementById('musicBtn');
+  if(musicOn){ aud.pause(); btn.textContent='♪'; musicOn=false; }
+  else { aud.play().catch(()=>{}); btn.textContent='♫'; musicOn=true; }
+}
+</script>
+</body>
+</html>
